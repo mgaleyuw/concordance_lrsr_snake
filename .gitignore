@@ -1,0 +1,4 @@
+example/*
+logs/*
+results/*
+.snakemake/

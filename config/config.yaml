@@ -1,0 +1,8 @@
+targetfile: config/targets.txt
+threads: 10
+maskfile: workflow/resources/highRepro.sorted.filtered.bed
+restriction_analysis_bed: workflow/resources/Twist_ComprehensiveExome_targets_hg38.bed
+outputdirectory: results
+reference: /n/datg/hg38/hg38.fa
+overlapVCF: true
+bedRestrict: true
