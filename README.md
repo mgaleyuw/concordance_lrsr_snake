@@ -1,10 +1,10 @@
 # Concordance Workflow
 
-Run concordance between two long read SNV VCFs or a long read and short read VCFs using Picard.
-
+Calculate concordance between two long read SNV VCFs or compare long read to short read VCFs using Picard.
 
 Filter to regions of high reproducibility and low noise; sort output VCF and save the categorized variants separated by membership to only VCF1, only VCF2, differering zygosity, the union, and calls that differ because of differences in how multiallelic records are represented.
  
+In the case of exome SR data, restrict analysis to only exons specified in capture. One example bed file is included.
 
 If read depth information is included in the `DP` tag in the VCF, ony positions with >= 5 reads are included. 
 
