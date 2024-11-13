@@ -1,4 +1,5 @@
-example/*
+example/HG01046_illumina*
+example/HG01046-ONT*
 logs/*
 results/*
 .snakemake/
