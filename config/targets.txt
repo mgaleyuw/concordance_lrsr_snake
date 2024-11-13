@@ -1,1 +1,1 @@
-HG01046_identity_chr22 example/HG01046_illumina_chr22.vcf.gz example/HG01046_ONT_chr22.vcf.gz
+HG01046_identity_chr22 example/HG01046_SR_illumina_chr22.vcf.gz example/HG01046_LR_ONT_chr22.vcf.gz
