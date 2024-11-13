@@ -29,6 +29,7 @@ then
   VCF2NAME="VCF2"
 fi
 
+
 #call
 bcftools view -i 'INFO/CONC_ST="FP"' $INPUT | bcftools view -e 'INFO/CONC_ST="FN" || INFO/CONC_ST="TP"' > $filename.Unique.$VCF2NAME.vcf
 #truth

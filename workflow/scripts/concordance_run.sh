@@ -8,7 +8,7 @@ AUTOSOMES=0
 FILTERPASS=0
 DEBIANLIKE=0
 
-while getopts "1:2:o:m:b:v:r:fap" option; do
+while getopts "1:2:o:m:b:v:r:fapw:" option; do
   case $option in
       1) VCF1="$OPTARG";;
 	    2) VCF2="$OPTARG";;
@@ -20,6 +20,7 @@ while getopts "1:2:o:m:b:v:r:fap" option; do
       f) KEEPVCF=1;;
       a) AUTOSOMES=1;;
       p) FILTERPASS=1;;
+      w) WORKDIR="$OPTARG" ;;
   esac
 done
 
@@ -38,11 +39,14 @@ VCF2TRUNK="${VCF2##*/}"
 VCF2_OUT="${VCF2TRUNK%*.vcf.gz}.filtered.vcf"
 VCF2NAME="${VCF2TRUNK%*.vcf.gz}"
 
-TEMPOUTPUT="$OUTPUTNAME"_tmp
+if [ -z ${WORKDIR+x} ]
+then
+  TEMPOUTPUT="$OUTPUTNAME"_tmp
+else
+  TEMPOUTPUT="$WORKDIR"
+fi
 
-
-echo "Making temporary directory $TEMPOUTPOUT"
-
+echo "Making temporary directory $TEMPOUTPUT"
 mkdir -p $TEMPOUTPUT
 
 if [ $AUTOSOMES -eq 1 ]

@@ -12,19 +12,19 @@ def get_targets(wildcards):
     f.close()
     final_targets = []
     extensions=["contingency_metrics", "detail_metrics", "summary_metrics"] 
-    runType="fullWGS"
+    runType="WGS"
     compType="simple"
     if config["bedRestrict"]:
-        runType="bed"
+        runType="restricted"
     if config["overlapVCF"]:
-        compType="full"
+        compType="detail"
         extensions+=["vcf.gz", "vcf.gz.tbi", f"Unique.{COLNAMES[1]}.vcf", f"Unique.{COLNAMES[0]}.vcf", "Overlap.vcf", "Multiallelic.Mismatch.vcf", "Mixed.Zygosity.Mismatch.vcf"]
     for pair in samplepairs:
         targets=pair.split(" ")
         if(len(targets) != 3):
             raise ValueError("Target file must contain 2 columns of file paths plus a pair identifier")
-        trunk=f"{OUTPUTDIR}/{targets[0]}_concordance_{runType}_{compType}"
-        final_targets+=[f"{trunk}.genotype_concordance.{x}" for x in extensions]
+        trunk=f"{targets[0]}_concordance_{runType}_{compType}"
+        final_targets+=[f"{OUTPUTDIR}/{trunk}/{trunk}.genotype_concordance.{x}" for x in extensions]
     return final_targets
 
 def get_inputfiles(wildcards):

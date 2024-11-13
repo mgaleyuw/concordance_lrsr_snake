@@ -1,1 +1,1 @@
-HG01046_identity example/HG01046_illumina_chr1-22_c1_PASS.vcf.gz example/HG01046-ONT-hg38-R9-LSK110-guppy-sup-5mC.clair3.notPhased.vcf.gz
+HG01046_identity_chr22 example/HG01046_illumina_chr22.vcf.gz example/HG01046_ONT_chr22.vcf.gz
