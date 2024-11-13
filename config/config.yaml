@@ -5,4 +5,7 @@ restriction_analysis_bed: workflow/resources/Twist_ComprehensiveExome_targets_hg
 outputdirectory: results
 reference: /n/datg/hg38/hg38.fa
 overlapVCF: true
-bedRestrict: true
+bedRestrict: false
+autosomeOnly: true
+filterPassing: false
+columnNames: shortread,longread

@@ -3,7 +3,7 @@ import pandas as pd
 samples = pd.read_table(config["targetfile"], header=None, index_col=0, sep=" ")
 
 OUTPUTDIR=config["outputdirectory"]
-
+COLNAMES=config["columnNames"].split(",")
 THREADS=config["threads"]
 
 def get_targets(wildcards):
@@ -18,7 +18,7 @@ def get_targets(wildcards):
         runType="bed"
     if config["overlapVCF"]:
         compType="full"
-        extensions+=["vcf.gz", "vcf.gz.tbi", "Unique.Call.vcf", "Unique.Reference.vcf", "Overlap.Call.Reference.vcf", "Multiallelic.Mismatch.vcf", "Mixed.Zygosity.Mismatch.vcf"]
+        extensions+=["vcf.gz", "vcf.gz.tbi", f"Unique.{COLNAMES[1]}.vcf", f"Unique.{COLNAMES[0]}.vcf", "Overlap.vcf", "Multiallelic.Mismatch.vcf", "Mixed.Zygosity.Mismatch.vcf"]
     for pair in samplepairs:
         targets=pair.split(" ")
         if(len(targets) != 3):

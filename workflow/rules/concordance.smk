@@ -9,20 +9,31 @@ rule run_concordance_simple:
     threads: THREADS
     conda: "../envs/concordance.yaml"
     params:
-        scriptname=branch(evaluate("{RUNTYPE}=='fullWGS'"), then="workflow/scripts/concordance_run.sh", otherwise="workflow/scripts/concordance_run_bed.sh"),
+        scriptname="workflow/scripts/concordance_run.sh",
         outputname="".join([OUTPUTDIR,"/{COMPARISON}_concordance_{RUNTYPE}_simple"]),
         reference=config["reference"],
         mask=config["maskfile"],
-        bed=config["restriction_analysis_bed"]
+        bed=config["restriction_analysis_bed"],
+        filterPassing=config["filterPassing"]
     log:
         o="logs/{COMPARISON}_{RUNTYPE}_simple_concordance.o.log"
     shell:
         """
         if [ {wildcards.RUNTYPE} == "bed" ]
         then
-            bash {params.scriptname} -1 {input.vcf1} -2 {input.vcf2} -o {params.outputname} -m {params.mask}  -b {params.bed} > {log.o} 2>&1
+            if [ {params.filterPassing} == "true" ]
+            then
+                bash {params.scriptname} -1 {input.vcf1} -2 {input.vcf2} -o {params.outputname} -m {params.mask}  -b {params.bed} -p > {log.o} 2>&1
+            else
+                bash {params.scriptname} -1 {input.vcf1} -2 {input.vcf2} -o {params.outputname} -m {params.mask}  -b {params.bed} > {log.o} 2>&1
+            fi
         else
-            bash {params.scriptname} -1 {input.vcf1} -2 {input.vcf2} -o {params.outputname} -m {params.mask} > {log.o} 2>&1
+            if [ {params.filterPassing} == "true" ]
+            then
+                bash {params.scriptname} -1 {input.vcf1} -2 {input.vcf2} -o {params.outputname} -m {params.mask} -p > {log.o} 2>&1
+            else
+                bash {params.scriptname} -1 {input.vcf1} -2 {input.vcf2} -o {params.outputname} -m {params.mask} > {log.o} 2>&1
+            fi
         fi
         """
 
@@ -39,20 +50,31 @@ rule run_concordance_full:
     threads: THREADS
     conda: "../envs/concordance.yaml"
     params:
-        scriptname=branch(evaluate("{RUNTYPE}=='fullWGS'"), then="workflow/scripts/concordance_run.sh", otherwise="workflow/scripts/concordance_run_bed.sh"),
+        scriptname="workflow/scripts/concordance_run.sh",
         outputname="".join([OUTPUTDIR,"/{COMPARISON}_concordance_{RUNTYPE}_full"]),
         reference=config["reference"],
         mask=config["maskfile"],
-        bed=config["restriction_analysis_bed"]
+        bed=config["restriction_analysis_bed"],
+        filterPassing=config["filterPassing"]
     log:
         o="logs/{COMPARISON}_{RUNTYPE}_full_concordance.o.log"
     shell:
         """
         if [ {wildcards.RUNTYPE} == "bed" ]
         then
-            bash {params.scriptname} -1 {input.vcf1} -2 {input.vcf2} -o {params.outputname} -m {params.mask}  -b {params.bed} -f > {log.o} 2>&1
+            if [ {params.filterPassing} == "true" ]
+            then
+                bash {params.scriptname} -1 {input.vcf1} -2 {input.vcf2} -o {params.outputname} -m {params.mask}  -b {params.bed} -f -p > {log.o} 2>&1
+            else
+                bash {params.scriptname} -1 {input.vcf1} -2 {input.vcf2} -o {params.outputname} -m {params.mask}  -b {params.bed} -f > {log.o} 2>&1
+            fi
         else
-            bash {params.scriptname} -1 {input.vcf1} -2 {input.vcf2} -o {params.outputname} -m {params.mask} -f > {log.o} 2>&1
+            if [ {params.filterPassing} == "true" ]
+            then
+                bash {params.scriptname} -1 {input.vcf1} -2 {input.vcf2} -o {params.outputname} -m {params.mask} -f -p > {log.o} 2>&1
+            else
+                bash {params.scriptname} -1 {input.vcf1} -2 {input.vcf2} -o {params.outputname} -m {params.mask} -f > {log.o} 2>&1
+            fi
         fi
         """
 
@@ -60,17 +82,19 @@ rule split_contingency:
     input:
         vcf="".join([OUTPUTDIR,"/{COMPARISON}_concordance_{RUNTYPE}_full.genotype_concordance.vcf.gz"]),
     output:
-        ucall_vcf="".join([OUTPUTDIR,"/{COMPARISON}_concordance_{RUNTYPE}_full.genotype_concordance.Unique.Call.vcf"]),
-        uref_vcf="".join([OUTPUTDIR,"/{COMPARISON}_concordance_{RUNTYPE}_full.genotype_concordance.Unique.Reference.vcf"]),
-        overlap_vcf="".join([OUTPUTDIR,"/{COMPARISON}_concordance_{RUNTYPE}_full.genotype_concordance.Overlap.Call.Reference.vcf"]),
+        ucall_vcf="".join([OUTPUTDIR,"/{COMPARISON}_concordance_{RUNTYPE}_full.genotype_concordance.Unique.",COLNAMES[1],".vcf"]),
+        uref_vcf="".join([OUTPUTDIR,"/{COMPARISON}_concordance_{RUNTYPE}_full.genotype_concordance.Unique.",COLNAMES[0],".vcf"]),
+        overlap_vcf="".join([OUTPUTDIR,"/{COMPARISON}_concordance_{RUNTYPE}_full.genotype_concordance.Overlap.vcf"]),
         multiallelic_vcf="".join([OUTPUTDIR,"/{COMPARISON}_concordance_{RUNTYPE}_full.genotype_concordance.Multiallelic.Mismatch.vcf"]),
         mixedzygo_vcf="".join([OUTPUTDIR,"/{COMPARISON}_concordance_{RUNTYPE}_full.genotype_concordance.Mixed.Zygosity.Mismatch.vcf"])
     threads: 1
     conda: "../envs/concordance.yaml"
     params: 
-        script="workflow/split_contingency.sh",
-        prefix="".join([OUTPUTDIR,"/{COMPARISON}_concordance_{RUNTYPE}_full.genotype_concordance"])
+        script="workflow/scripts/split_contingency.sh",
+        prefix="".join([OUTPUTDIR,"/{COMPARISON}_concordance_{RUNTYPE}_full.genotype_concordance"]),
+        vcf1=COLNAMES[0],
+        vcf2=COLNAMES[1]
     shell:
         """
-        bash {params.script} -i {input.vcf} -o {params.prefix}
+        bash {params.script} -i {input.vcf} -o {params.prefix} -1 {params.vcf1} -2 {params.vcf2}
         """
