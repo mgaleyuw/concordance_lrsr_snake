@@ -32,9 +32,10 @@ fi
  
 for file in ${inputfiles[@]}
 do
-    SNPhetTPmv=$(grep -E "SNP.+HET.+HET.+TP$" $file | cut -f6 | paste -sd+ | bc ) || 0
+    SNPhetTPmv=0
+    SNPhetTPmv=$(grep -E "SNP.+HET.+HET.+TP$" $file | cut -f6 | paste -sd+ | bc )
     SNPhetTP=$(grep -E "SNP.+HET.+HET.+TP,TN$" $file | cut -f6 | paste -sd+ | bc)
-    SNPhetTPall=$(echo "$SNPhetTPmv + $SNPhetTP" | bc) || 0
+    SNPhetTPall=$(echo "0+$SNPhetTPmv+$SNPhetTP+0" | tr -s '+' | bc)
     SNPhomTP=$(grep -E "SNP.+HOM.+HOM.+TP$" $file | cut -f6 | paste -sd+ | bc)  
     SNPhetFN=$(grep -E "SNP.+HET.+MISSING.+FN$" $file | cut -f6 | paste -sd+ | bc)
     SNPhomFN=$(grep -E "SNP.+HOM.+MISSING.+FN$" $file | cut -f6 | paste -sd+ | bc)
@@ -42,12 +43,12 @@ do
     SNPhomFP=$(grep -E "SNP.+MISSING.+HOM.+FP$" $file | cut -f6 | paste -sd+ | bc)
     SNPhomMulti=$(grep -E "SNP.+HOM.+HOM.+FP,FN$" $file | cut -f6 | paste -sd+ | bc)
     SNPallMulti=$(grep -E "SNP.+FP,FN$" $file | cut -f6 | paste -sd+ | bc)
-    SNPhetMulti=$(echo "$SNPallMulti - $SNPhomMulti" | bc)
+    SNPhetMulti=$(echo "$SNPallMulti-$SNPhomMulti-0" | tr -s '-' |  bc)
     SNPzygo=$(grep -E "SNP.+TP,FN$" $file | cut -f6 | paste -sd+ | bc)
 
     INDELhetTPmv=$(grep -E "INDEL.+HET.+HET.+TP$" $file | cut -f6 | paste -sd+ | bc)
     INDELhetTP=$(grep -E "INDEL.+HET.+HET.+TP,TN$" $file | cut -f6 | paste -sd+ | bc)
-    INDELhetTPall=$(echo "$INDELhetTPmv + $INDELhetTP" | bc)
+    INDELhetTPall=$(echo "0+$INDELhetTPmv+$INDELhetTP+0" | tr -s '+' | bc)
     INDELhomTP=$(grep -E "INDEL.+HOM.+HOM.+TP$" $file | cut -f6 | paste -sd+ | bc)
     INDELhetFN=$(grep -E "INDEL.+HET.+MISSING.+FN$" $file | cut -f6 | paste -sd+ | bc)
     INDELhomFN=$(grep -E "INDEL.+HOM.+MISSING.+FN$" $file | cut -f6 | paste -sd+ | bc)
@@ -55,7 +56,7 @@ do
     INDELhomFP=$(grep -E "INDEL.+MISSING.+HOM.+FP$" $file | cut -f6 | paste -sd+ | bc)
     INDELhomMulti=$(grep -E "INDEL.+HOM.+HOM.+FP,FN$" $file | cut -f6 | paste -sd+ | bc)
     INDELallMulti=$(grep -E "INDEL.+FP,FN$" $file | cut -f6 | paste -sd+ | bc)
-    INDELhetMulti=$(echo "$INDELallMulti - $INDELhomMulti" | bc)
+    INDELhetMulti=$(echo "$INDELallMulti-$INDELhomMulti-0" | tr -s '-' | bc)
     INDELzygo=$(grep -E "INDEL.+TP,FN$" $file | cut -f6 | paste -sd+ | bc)
 
     echo "$file,SNP,hom,Overlap,$SNPhomTP" >> $OUTPUTFILE

@@ -126,21 +126,19 @@ results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_con
 
 Running `bash post_run/summarizeVariants.sh results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics` produces counts of each category (overlap, unique call, unique reference, mixed zygosity, multiallelic) within INDEL/SNP and heteroygous/homozygous categories.
 
-Some syntax errors are produced in this quick convenience script and are safe to ignore.
-
 |File                                                                                                                                   |VariantType|Zygosity|Classification|Value|
 |---------------------------------------------------------------------------------------------------------------------------------------|-----------|--------|--------------|-----|
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |hom     |Overlap       |14506|
-|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |het     |Overlap       |     |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |het     |Overlap       |22946|
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |hom     |UniqueCall    |514  |
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |het     |UniqueCall    |1    |
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |hom     |UniqueRef     |13   |
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |het     |UniqueRef     |361  |
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |hom     |Multiallelic  |     |
-|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |het     |Multiallelic  |     |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |het     |Multiallelic  |1    |
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |het     |MixedZygosity |5    |
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |hom     |Overlap       |1583 |
-|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |het     |Overlap       |     |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |het     |Overlap       |2195 |
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |hom     |UniqueCall    |340  |
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |het     |UniqueCall    |28   |
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |hom     |UniqueRef     |221  |
@@ -148,7 +146,6 @@ Some syntax errors are produced in this quick convenience script and are safe to
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |hom     |Multiallelic  |55   |
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |het     |Multiallelic  |43   |
 |results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |het     |MixedZygosity |6    |
-
 
 
 
