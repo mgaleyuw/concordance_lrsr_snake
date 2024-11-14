@@ -85,8 +85,71 @@ snakemake --use-conda --cores 10
 ```
 
 
-In the raw output VCF, the `TRUTH` VCF corresponds to VCF1, in the first column of inputs, and the `CALL` VCF corresponds to VCF2, in the second column of inputs. 
+**In the raw output VCF, the `TRUTH` or `reference` VCF corresponds to VCF1, the first column of inputs, and the `CALL` VCF corresponds to VCF2, the second column of inputs.**
 
 
 The categorized contingency VCFs are named according to the column names defined in `config.yaml`, where the `TRUTH` VCF has been renamed `shortread` and the `CALL` VCF has been renamed `longread`.
+
+
+The workflow outputs the following files:
+```
+results/HG01046_identity_chr22_concordance_WGS_detail/
+├── HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.contingency_metrics
+├── HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics
+├── HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.Mixed.Zygosity.Mismatch.vcf
+├── HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.Multiallelic.Mismatch.vcf
+├── HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.Overlap.vcf
+├── HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.summary_metrics
+├── HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.Unique.longread.vcf
+├── HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.Unique.shortread.vcf
+├── HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.vcf.gz
+└── HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.vcf.gz.tbi
+```
+
+For confirming identity, `HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.summary_metrics` is the most useful. The last two columns show reference concordance and non-genotype reference concordance respectively.
+
+**METRICS CLASS	picard.vcf.GenotypeConcordanceSummaryMetrics**
+| VARIANT_TYPE |	TRUTH_SAMPLE	 | CALL_SAMPLE | HET_SENSITIVITY  | HET_PPV | HET_SPECIFICITY  | HOMVAR_SENSITIVITY  | HOMVAR_PPV  | HOMVAR_SPECIFICITY | VAR_SENSITIVITY  | VAR_PPV  | VAR_SPECIFICITY  | GENOTYPE_CONCORDANCE  | NON_REF_GENOTYPE_CONCORDANCE  |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| SNP | HG01046 | SAMPLE | 0.98424 |  0.963729 |  ? | 0.998143 | 0.963862 | ?| 0.989575 | 0.963781 | 0.944916 | 0.998188 | 0.998188 |
+| INDEL | HG01046 | SAMPLE | 0.581628 | 0.788358 | ? | 0.753283 | 0.777202 | ? | 0.640314 | 0.78371 | 0.792701 | 0.771178 | 0.771178 |
+
+Comparisons between LR and SR will always have lower INDEL concordance than SNP concordance. 
+
+Running `bash post_run/summarizeConcordance.sh results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.summary_metrics` can pull the last two columns of information for one or more samples quickly.
+
+```
+File,TYPE,GenotypeConcordance,NonRefConcordance
+results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.summary_metrics,SNP,0.998188,0.998188
+results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.summary_metrics,INDEL,0.771178,0.771178
+```
+
+Running `bash post_run/summarizeVariants.sh results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics` produces counts of each category (overlap, unique call, unique reference, mixed zygosity, multiallelic) within INDEL/SNP and heteroygous/homozygous categories.
+
+Some syntax errors are produced in this quick convenience script and are safe to ignore.
+
+|File                                                                                                                                   |VariantType|Zygosity|Classification|Value|
+|---------------------------------------------------------------------------------------------------------------------------------------|-----------|--------|--------------|-----|
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |hom     |Overlap       |14506|
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |het     |Overlap       |     |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |hom     |UniqueCall    |514  |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |het     |UniqueCall    |1    |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |hom     |UniqueRef     |13   |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |het     |UniqueRef     |361  |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |hom     |Multiallelic  |     |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |het     |Multiallelic  |     |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|SNP        |het     |MixedZygosity |5    |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |hom     |Overlap       |1583 |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |het     |Overlap       |     |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |hom     |UniqueCall    |340  |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |het     |UniqueCall    |28   |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |hom     |UniqueRef     |221  |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |het     |UniqueRef     |1099 |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |hom     |Multiallelic  |55   |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |het     |Multiallelic  |43   |
+|results/HG01046_identity_chr22_concordance_WGS_detail/HG01046_identity_chr22_concordance_WGS_detail.genotype_concordance.detail_metrics|INDEL      |het     |MixedZygosity |6    |
+
+
+
+
 

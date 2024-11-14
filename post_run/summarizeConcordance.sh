@@ -22,7 +22,7 @@ while getopts "o:ah" opt; do
   case "$opt" in
     o) OUTPUTFILE=$OPTARG ;;
     a) APPEND=1 ;;
-    h) help()
+    h) help
        exit 1 ;;
   esac
 done
